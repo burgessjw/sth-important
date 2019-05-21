@@ -8,3 +8,5 @@
 
 5、请求收集器
 https://github.com/Runscope/requestbin
+
+6、框架的调试工具可以显示sql语句等信息
