@@ -1,0 +1,8 @@
+ETL，是英文Extract-Transform-Load的缩写，用来描述将数据从来源端经过萃取（extract）、转置（transform）、加载（load）至目的端的过程。ETL一词较常用在数据仓库，但其对象并不限于数据仓库。
+
+mac容器内可以使用下面这个环境变量与主机通信
+host.docker.internal
+
+
+ssh管道
+ssh -f jiawei@118.31.246.229 -L 0.0.0.0:33065:172.21.0.4:3306 -N
