@@ -1,0 +1,36 @@
+function arc()
+{
+    set -- arc --arcrc-file=/mnt/.arcrc "$@"
+
+    LOCAL_ARCRC="$HOME/.arcrc"
+    if [[ ! -e $LOCAL_ARCRC ]]; then
+        echo '{}' > $LOCAL_ARCRC
+        chmod 600 $LOCAL_ARCRC
+    fi
+
+    LOCAL_USER_GITCONFIG="$HOME/.gitconfig"
+    if [[ ! -e $LOCAL_USER_GITCONFIG ]]; then
+        touch $LOCAL_USER_GITCONFIG
+    fi
+
+    # TODO 仅 land、diff 需要 SSH
+    eval `keychain --eval id_rsa id_lhjx`
+
+    LOCAL_SSH_KNOWN_HOSTS="$HOME/.ssh/known_hosts"
+    if [[ ! -e $LOCAL_SSH_KNOWN_HOSTS ]]; then
+        touch $LOCAL_SSH_KNOWN_HOSTS
+    fi
+
+    docker run --rm -it \
+        -v $PWD:/code \
+        -v $LOCAL_ARCRC:/mnt/.arcrc \
+        -v $LOCAL_USER_GITCONFIG:/etc/gitconfig \
+        -w /code \
+        -v /etc/passwd:/etc/passwd:ro \
+        -v /etc/group:/etc/group:ro \
+        -v $SSH_AUTH_SOCK:/ssh-auth.sock \
+        -e SSH_AUTH_SOCK=/ssh-auth.sock \
+        -v $LOCAL_SSH_KNOWN_HOSTS:/mnt/ssh_known_hosts \
+        -u $(id -u):$(id -g) \
+        mdxdm/arc "$@"
+}

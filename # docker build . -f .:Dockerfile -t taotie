@@ -1,0 +1,16 @@
+# docker build . -f ./Dockerfile -t arc
+
+FROM php:7.3.8-fpm-alpine3.9
+
+RUN mkdir /
+RUN set -ex \
+ && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+ && apk update \
+ && apk add \
+    libressl \
+ && apk add --no-cache \
+    --virtual .build-deps gcc python3-dev musl-dev libffi-dev libressl-dev \
+ && pip install --no-cache-dir -r /requirements.txt --index-url https://mirrors.aliyun.com/pypi/simple/ \
+ && apk del .build-deps
+
+WORKDIR /code
