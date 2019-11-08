@@ -1,3 +1,21 @@
+# 代码调试方法总结
+- xdebug断点
+
+- 日志调试
+
+- 中断程序调试，var_dump
+
+- finger cross撞大运调试（不太懂）
+
+- 请求收集器
+https://github.com/Runscope/requestbin
+
+- 框架的调试工具可以显示sql语句等信息
+
+---
+
+xdebug
+
 # Docker 使用
 
 - 往容器里挂载文件
