@@ -32,5 +32,5 @@ function arc()
         -e SSH_AUTH_SOCK=/ssh-auth.sock \
         -v $LOCAL_SSH_KNOWN_HOSTS:/mnt/ssh_known_hosts \
         -u $(id -u):$(id -g) \
-        mdxdm/arc "$@"
+        modicn/arc "$@"
 }

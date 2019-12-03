@@ -1,0 +1,29 @@
+function composer()
+{
+    LOCAL_COMPOSER_HOME=${COMPOSER_HOME:-$HOME/.config/composer}
+    if [[ ! -d $LOCAL_COMPOSER_HOME ]]; then
+        mkdir -p $LOCAL_COMPOSER_HOME
+    fi
+
+    eval `keychain --eval id_rsa id_lhjx`
+
+    if [[ "$1" == "update" ]] || [[ "$1" == "install" ]]; then
+        set -- --ignore-platform-reqs "$@"
+    fi
+
+    LOCAL_SSH_KNOWN_HOSTS="$HOME/.ssh/known_hosts"
+    if [[ ! -e $LOCAL_SSH_KNOWN_HOSTS ]]; then
+        touch $LOCAL_SSH_KNOWN_HOSTS
+    fi
+
+    docker run --rm -it \
+        -v $PWD:/app \
+        -v /etc/passwd:/etc/passwd:ro \
+        -v /etc/group:/etc/group:ro \
+        -v $SSH_AUTH_SOCK:/ssh-auth.sock \
+        -e SSH_AUTH_SOCK=/ssh-auth.sock \
+        -v $LOCAL_SSH_KNOWN_HOSTS:/mnt/ssh_known_hosts \
+        -v $LOCAL_COMPOSER_HOME:/tmp \
+        -u $(id -u):$(id -g) \
+        modicn/composer "$@"
+}
